@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Imagen a Cloudinary</title>
+</head>
+<body>
+    <h1>Subir Imagen a Cloudinary</h1>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Subir Imagen</button>
+
+    <h2>Imágenes Subidas</h2>
+    <div id="gallery"></div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            if (!fileInput.files.length) {
+                alert("Selecciona una imagen");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                alert("Imagen subida correctamente");
+                loadImages();
+            } else {
+                alert("Error al subir la imagen");
+            }
+        }
+
+        async function loadImages() {
+            const response = await fetch("/images");
+            const images = await response.json();
+
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = ""; 
+
+            images.forEach(image => {
+                const container = document.createElement("div");
+                container.style.marginBottom = "20px";
+
+                const img = document.createElement("img");
+                img.src = image.url;
+                img.width = 300;
+
+                const deleteButton = document.createElement("button");
+                deleteButton.innerText = "Eliminar";
+                deleteButton.onclick = async () => {
+                    await deleteImage(image.public_id);
+                };
+
+                container.appendChild(img);
+                container.appendChild(deleteButton);
+                gallery.appendChild(container);
+            });
+        }
+
+        async function deleteImage(public_id) {
+            const response = await fetch(`/delete/${public_id}`, { method: "DELETE" });
+
+            if (response.ok) {
+                alert("Imagen eliminada correctamente");
+                loadImages();
+            } else {
+                alert("Error al eliminar la imagen");
+            }
+        }
+
+        loadImages();
+    </script>
+</body>
+</html>
