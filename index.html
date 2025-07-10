@@ -3,79 +3,395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Imagen a Cloudinary</title>
+    <title>Oxxo Max Trading - Plataforma Educativa Futurista</title>
+    <style>
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --accent: #4776E6;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --neon: #00f2fe;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(110, 72, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(157, 80, 187, 0.15) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--neon), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .content-editor {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .editor-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        #contentInput {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .content-display {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .content-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .content-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .content-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .content-video {
+            width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .timestamp {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .content-editor, .content-display {
+                padding: 15px;
+            }
+        }
+        
+        /* Efectos futuristas */
+        .glow-effect {
+            position: relative;
+        }
+        
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--neon), var(--accent), var(--secondary), var(--primary));
+            background-size: 400%;
+            border-radius: 10px;
+            opacity: 0;
+            transition: 0.5s;
+            animation: glow 8s linear infinite;
+        }
+        
+        .glow-effect:hover::after {
+            opacity: 0.3;
+        }
+        
+        @keyframes glow {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 400% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Subir Imagen a Cloudinary</h1>
-    <input type="file" id="fileInput">
-    <button onclick="uploadFile()">Subir Imagen</button>
-
-    <h2>Imágenes Subidas</h2>
-    <div id="gallery"></div>
+    <div class="container">
+        <header>
+            <h1 class="logo glow-effect">Oxxo Max Trading</h1>
+            <p>Plataforma educativa futurista</p>
+        </header>
+        
+        <section class="content-editor glow-effect">
+            <h2>Agregar Nuevo Contenido</h2>
+            <div class="editor-toolbar">
+                <button class="editor-btn" onclick="formatText('bold')"><b>B</b></button>
+                <button class="editor-btn" onclick="formatText('italic')"><i>I</i></button>
+                <button class="editor-btn" onclick="formatText('underline')"><u>U</u></button>
+                <button class="editor-btn" onclick="insertText('\n# ')">Título</button>
+                <button class="editor-btn" onclick="insertText('\n- ')">Lista</button>
+                <button class="editor-btn" onclick="document.getElementById('fileInput').click()">Imagen/Video</button>
+                <input type="file" id="fileInput" accept="image/, video/" onchange="handleFileUpload()">
+            </div>
+            <textarea id="contentInput" placeholder="Escribe tu contenido aquí o pega información de Wikipedia..."></textarea>
+            <button class="editor-btn" onclick="saveContent()">Publicar Contenido</button>
+        </section>
+        
+        <section class="content-display" id="contentDisplay">
+            <h2>Contenido Reciente</h2>
+            <!-- El contenido se cargará aquí dinámicamente -->
+        </section>
+    </div>
 
     <script>
-        async function uploadFile() {
-            const fileInput = document.getElementById("fileInput");
-            if (!fileInput.files.length) {
-                alert("Selecciona una imagen");
+        // Cargar contenido guardado al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContent();
+        });
+        
+        // Función para guardar contenido
+        function saveContent() {
+            const content = document.getElementById('contentInput').value;
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!content && !fileInput.files[0]) {
+                alert('Por favor, ingresa contenido o sube un archivo');
                 return;
             }
-
-            const formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-
-            const response = await fetch("/upload", {
-                method: "POST",
-                body: formData
-            });
-
-            if (response.ok) {
-                alert("Imagen subida correctamente");
-                loadImages();
-            } else {
-                alert("Error al subir la imagen");
-            }
-        }
-
-        async function loadImages() {
-            const response = await fetch("/images");
-            const images = await response.json();
-
-            const gallery = document.getElementById("gallery");
-            gallery.innerHTML = ""; 
-
-            images.forEach(image => {
-                const container = document.createElement("div");
-                container.style.marginBottom = "20px";
-
-                const img = document.createElement("img");
-                img.src = image.url;
-                img.width = 300;
-
-                const deleteButton = document.createElement("button");
-                deleteButton.innerText = "Eliminar";
-                deleteButton.onclick = async () => {
-                    await deleteImage(image.public_id);
+            
+            // Crear objeto con el contenido
+            const contentObj = {
+                text: content,
+                timestamp: new Date().toLocaleString(),
+                media: null
+            };
+            
+            // Manejar archivos subidos
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    contentObj.media = {
+                        type: file.type.split('/')[0], // 'image' o 'video'
+                        data: e.target.result
+                    };
+                    
+                    // Guardar en localStorage
+                    saveToLocalStorage(contentObj);
+                    
+                    // Limpiar campos
+                    document.getElementById('contentInput').value = '';
+                    fileInput.value = '';
+                    
+                    // Recargar contenido mostrado
+                    loadContent();
                 };
-
-                container.appendChild(img);
-                container.appendChild(deleteButton);
-                gallery.appendChild(container);
-            });
-        }
-
-        async function deleteImage(public_id) {
-            const response = await fetch(`/delete/${public_id}`, { method: "DELETE" });
-
-            if (response.ok) {
-                alert("Imagen eliminada correctamente");
-                loadImages();
+                
+                reader.readAsDataURL(file);
             } else {
-                alert("Error al eliminar la imagen");
+                // Guardar solo texto
+                saveToLocalStorage(contentObj);
+                
+                // Limpiar campo
+                document.getElementById('contentInput').value = '';
+                
+                // Recargar contenido mostrado
+                loadContent();
             }
         }
-
-        loadImages();
+        
+        // Guardar en localStorage
+        function saveToLocalStorage(contentObj) {
+            let contents = JSON.parse(localStorage.getItem('oxxoMaxContents')) || [];
+            contents.unshift(contentObj); // Agregar al inicio
+            localStorage.setItem('oxxoMaxContents', JSON.stringify(contents));
+        }
+        
+        // Cargar contenido desde localStorage
+        function loadContent() {
+            const contents = JSON.parse(localStorage.getItem('oxxoMaxContents')) || [];
+            const display = document.getElementById('contentDisplay');
+            
+            // Limpiar display excepto el título
+            while (display.children.length > 1) {
+                display.removeChild(display.lastChild);
+            }
+            
+            // Mostrar cada contenido
+            contents.forEach(content => {
+                const item = document.createElement('div');
+                item.className = 'content-item';
+                
+                if (content.text) {
+                    const text = document.createElement('div');
+                    text.className = 'content-text';
+                    // Convertir saltos de línea a <br> y markdown básico a HTML
+                    let htmlText = content.text
+                        .replace(/\n/g, '<br>')
+                        .replace(/\\(.?)\\*/g, '<strong>$1</strong>')
+                        .replace(/\(.?)\*/g, '<em>$1</em>')
+                        .replace(/\(.*?)\/g, '<u>$1</u>')
+                        .replace(/\# (.*?)(<br>|$)/g, '<h3>$1</h3>')
+                        .replace(/\- (.*?)(<br>|$)/g, '<li>$1</li>');
+                    
+                    text.innerHTML = htmlText;
+                    item.appendChild(text);
+                }
+                
+                if (content.media) {
+                    if (content.media.type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = content.media.data;
+                        img.className = 'content-image';
+                        item.appendChild(img);
+                    } else if (content.media.type === 'video') {
+                        const video = document.createElement('video');
+                        video.src = content.media.data;
+                        video.controls = true;
+                        video.className = 'content-video';
+                        item.appendChild(video);
+                    }
+                }
+                
+                const time = document.createElement('div');
+                time.className = 'timestamp';
+                time.textContent = 'Publicado: ' + content.timestamp;
+                item.appendChild(time);
+                
+                display.appendChild(item);
+            });
+        }
+        
+        // Funciones de formato de texto
+        function formatText(format) {
+            const textarea = document.getElementById('contentInput');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            let newText = '';
+            
+            switch(format) {
+                case 'bold':
+                    newText = '' + selectedText + '';
+                    break;
+                case 'italic':
+                    newText = '' + selectedText + '';
+                    break;
+                case 'underline':
+                    newText = '' + selectedText + '';
+                    break;
+            }
+            
+            textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+        }
+        
+        function insertText(text) {
+            const textarea = document.getElementById('contentInput');
+            const start = textarea.selectionStart;
+            
+            textarea.value = textarea.value.substring(0, start) + text + textarea.value.substring(start);
+            textarea.focus();
+            textarea.selectionStart = start + text.length;
+            textarea.selectionEnd = start + text.length;
+        }
+        
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files[0]) {
+                // Opcional: mostrar vista previa o nombre de archivo
+            }
+        }
     </script>
 </body>
 </html>
