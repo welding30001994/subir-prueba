@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oxxo Max Trading</title>
+    <title>8 Max Trade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
-        /* Estilos generales */
         :root {
-            --primary-color: #00f0ff;
-            --secondary-color: #ff00f0;
-            --dark-bg: #0a0a1a;
-            --darker-bg: #050510;
-            --light-text: #ffffff;
-            --dark-text: #cccccc;
+            --primary-color: #6e48aa;
+            --secondary-color: #9d50bb;
+            --accent-color: #4776E6;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --success-color: #4BB543;
+            --error-color: #ff3333;
+            --font-main: 'Roboto', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
         }
 
         * {
@@ -22,241 +30,270 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
+            font-family: var(--font-main);
+            color: var(--light-color);
+            background-color: var(--dark-color);
             line-height: 1.6;
-        }
-
-        h1, h2, h3 {
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Login Container */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            position: relative;
-            overflow: hidden;
         }
 
-        .card {
-            background: rgba(10, 10, 30, 0.8);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 15px;
+        /* Estilos para la página de autenticación */
+        .auth-container {
+            max-width: 500px;
+            margin: auto;
             padding: 2rem;
-            width: 90%;
-            max-width: 450px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(110, 72, 170, 0.3);
             z-index: 10;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2),
-                        0 0 40px rgba(255, 0, 240, 0.1);
             position: relative;
-            overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                transparent,
-                transparent,
-                transparent,
-                var(--primary-color)),
-                linear-gradient(
-                to top left,
-                transparent,
-                transparent,
-                transparent,
-                var(--secondary-color));
-            animation: rotate 10s linear infinite;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: 2px;
         }
 
-        /* Tabs */
-        .tabs {
+        .slogan {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        .auth-tabs {
             display: flex;
             margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .tab {
+        .auth-tab {
             flex: 1;
             padding: 0.8rem;
             background: none;
             border: none;
-            border-bottom: 2px solid transparent;
-            color: var(--light-text);
-            font-weight: bold;
+            color: var(--light-color);
+            font-family: var(--font-main);
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        /* Forms */
-        .form-container {
+            transition: all 0.3s ease;
             position: relative;
-            min-height: 300px;
+        }
+
+        .auth-tab.active {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         }
 
         .auth-form {
-            position: absolute;
-            width: 100%;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .auth-form.active {
-            opacity: 1;
-            pointer-events: all;
+            display: block;
         }
 
         .input-group {
-            position: relative;
             margin-bottom: 1.5rem;
-        }
-
-        .input-group input, 
-        .input-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 5px;
-            color: var(--light-text);
-            font-size: 1rem;
         }
 
         .input-group label {
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            color: var(--dark-text);
-            transition: all 0.3s;
-            pointer-events: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
         }
 
-        .input-group input:focus + label,
-        .input-group input:valid + label,
-        .input-group textarea:focus + label,
-        .input-group textarea:valid + label {
-            top: -20px;
-            left: 0;
-            font-size: 0.8rem;
-            color: var(--primary-color);
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--light-color);
+            font-family: var(--font-main);
+            transition: all 0.3s ease;
         }
 
-        /* Buttons */
-        .btn {
-            padding: 0.8rem 1.5rem;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(157, 80, 187, 0.3);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             border: none;
             border-radius: 5px;
-            color: var(--dark-bg);
-            font-weight: bold;
+            color: var(--light-color);
+            font-family: var(--font-main);
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            display: block;
-            width: 100%;
-            margin-top: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .btn:hover {
+        .auth-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(110, 72, 170, 0.4);
         }
 
-        /* Dashboard (oculto inicialmente) */
-        #dashboard {
+        .auth-message {
+            margin-top: 1.5rem;
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-align: center;
             display: none;
-            width: 100%;
-            min-height: 100vh;
-            padding: 1rem;
         }
 
-        .dashboard-header {
+        .auth-message.success {
+            background-color: rgba(75, 181, 67, 0.2);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+            display: block;
+        }
+
+        .auth-message.error {
+            background-color: rgba(255, 51, 51, 0.2);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+            display: block;
+        }
+
+        /* Estilos para la página principal */
+        .home-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-            margin-bottom: 1.5rem;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 5px;
+            color: var(--light-color);
+            font-family: var(--font-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(110, 72, 170, 0.4);
         }
 
         .content-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .book-container {
             display: flex;
             flex-direction: column;
+            gap: 2rem;
         }
 
-        @media (min-width: 768px) {
-            .content-container {
-                flex-direction: row;
-            }
+        .post-page {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .sidebar {
-            flex: 0 0 250px;
-            padding: 1rem;
-            border-right: 1px solid rgba(0, 240, 255, 0.3);
+        .post-page:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(110, 72, 170, 0.3);
         }
 
-        .content-viewer {
-            flex: 1;
-            padding: 1rem;
+        .page-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .publication-item {
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 5px;
+        .post-title {
+            font-family: var(--font-heading);
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .post-content {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .post-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .post-meta {
             display: flex;
             justify-content: space-between;
-        }
-
-        .publication-item:hover {
-            background: rgba(0, 240, 255, 0.1);
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #ff5555;
-            cursor: pointer;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
         }
 
         /* Modal */
@@ -268,175 +305,192 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            justify-content: center;
+            z-index: 1000;
             align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
         }
 
         .modal-content {
-            background: var(--darker-bg);
+            background: var(--dark-color);
             padding: 2rem;
-            border-radius: 10px;
-            width: 90%;
+            border-radius: 15px;
             max-width: 600px;
-            border: 1px solid var(--primary-color);
+            width: 90%;
+            box-shadow: 0 0 30px rgba(110, 72, 170, 0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
         }
 
         .close-modal {
             position: absolute;
-            top: 10px;
-            right: 20px;
+            top: 1rem;
+            right: 1rem;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--primary-color);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
         }
 
-        /* Publicación */
-        .publication-view {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 10px;
-            min-height: 300px;
+        .close-modal:hover {
+            color: var(--light-color);
+            transform: rotate(90deg);
         }
 
-        .publication-image {
-            max-width: 100%;
-            margin-top: 1rem;
+        .submit-button {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border: none;
             border-radius: 5px;
+            color: var(--light-color);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(110, 72, 170, 0.4);
+        }
+
+        /* Partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                flex: 0 0 100%;
-                border-right: none;
-                border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            .auth-container {
+                width: 90%;
+                padding: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .content-container {
+                padding: 0 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Login/Register Container -->
-    <div class="container" id="auth-container">
-        <div class="card">
-            <div class="logo">
-                <h1>OXXO MAX TRADING</h1>
-            </div>
-            
-            <div class="tabs">
-                <button class="tab active" id="login-tab">Iniciar Sesión</button>
-                <button class="tab" id="register-tab">Registrarse</button>
-            </div>
-            
-            <div class="form-container">
-                <!-- Login Form -->
-                <form id="login-form" class="auth-form active">
-                    <div class="input-group">
-                        <input type="email" id="login-email" required>
-                        <label for="login-email">Correo Electrónico</label>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="password" id="login-password" required>
-                        <label for="login-password">Contraseña</label>
-                    </div>
-                    
-                    <button type="submit" class="btn">Acceder</button>
-                </form>
-                
-                <!-- Register Form -->
-                <form id="register-form" class="auth-form">
-                    <div class="input-group">
-                        <input type="text" id="register-name" required>
-                        <label for="register-name">Nombre Completo</label>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="email" id="register-email" required>
-                        <label for="register-email">Correo Electrónico</label>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="password" id="register-password" required>
-                        <label for="register-password">Contraseña</label>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="password" id="register-confirm" required>
-                        <label for="register-confirm">Confirmar Contraseña</label>
-                    </div>
-                    
-                    <button type="submit" class="btn">Registrarse</button>
-                </form>
-            </div>
+    <!-- Página de Autenticación -->
+    <div id="auth-page" class="auth-container">
+        <div class="logo-container">
+            <h1 class="logo">8 MAX TRADE</h1>
+            <p class="slogan">El futuro de las publicaciones exclusivas</p>
         </div>
+        
+        <div class="auth-form-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="login-tab">Iniciar Sesión</button>
+                <button class="auth-tab" id="register-tab">Registrarse</button>
+            </div>
+            
+            <!-- Formulario de Login -->
+            <form id="login-form" class="auth-form active">
+                <div class="input-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="auth-button">Acceder</button>
+            </form>
+            
+            <!-- Formulario de Registro -->
+            <form id="register-form" class="auth-form">
+                <div class="input-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-confirm">Confirmar Contraseña</label>
+                    <input type="password" id="register-confirm" required>
+                </div>
+                <button type="submit" class="auth-button">Registrarse</button>
+            </form>
+        </div>
+        
+        <div class="auth-message" id="auth-message"></div>
     </div>
     
-    <!-- Dashboard Container -->
-    <div id="dashboard">
-        <header class="dashboard-header">
-            <div class="logo">
-                <h1>OXXO MAX TRADING</h1>
-            </div>
-            
-            <div>
-                <span id="username-display"></span>
-                <button id="logout-btn" class="btn">Salir</button>
+    <!-- Página Principal (oculta inicialmente) -->
+    <div id="home-page" class="home-container">
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="logo">8 MAX TRADE</h1>
+                <nav class="main-nav">
+                    <button id="new-post-btn" class="nav-button">+ Nueva Publicación</button>
+                    <button id="logout-btn" class="nav-button">Cerrar Sesión</button>
+                </nav>
             </div>
         </header>
         
-        <div class="content-container">
-            <aside class="sidebar">
-                <h3>Mis Publicaciones</h3>
-                <ul id="publications-list">
-                    <!-- Publicaciones se cargarán aquí -->
-                </ul>
-                <button id="new-post-btn" class="btn">+ Nueva Publicación</button>
-            </aside>
-            
-            <section class="content-viewer">
-                <div class="publication-view" id="publication-view">
-                    <div class="empty-state">
-                        <h2>Selecciona una publicación o crea una nueva</h2>
-                        <p>Tu contenido educativo se mostrará aquí</p>
-                    </div>
-                </div>
-            </section>
-        </div>
+        <main class="content-container">
+            <div class="book-container" id="book-container">
+                <!-- Las publicaciones se agregarán aquí dinámicamente -->
+            </div>
+        </main>
         
         <!-- Modal para nueva publicación -->
         <div class="modal" id="post-modal">
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
-                <h2>Nueva Publicación Educativa</h2>
-                
-                <form id="new-post-form">
+                <h2>Nueva Publicación</h2>
+                <form id="post-form">
                     <div class="input-group">
-                        <input type="text" id="post-title" required>
-                        <label for="post-title">Título de la Lección</label>
+                        <label for="post-title">Título (opcional)</label>
+                        <input type="text" id="post-title">
                     </div>
-                    
                     <div class="input-group">
-                        <textarea id="post-content" rows="5" required></textarea>
                         <label for="post-content">Contenido</label>
+                        <textarea id="post-content" rows="5" required></textarea>
                     </div>
-                    
                     <div class="input-group">
-                        <input type="file" id="post-image" accept="image/*">
                         <label for="post-image">Imagen (opcional)</label>
+                        <input type="file" id="post-image" accept="image/*">
                     </div>
-                    
-                    <button type="submit" class="btn">Guardar Lección</button>
+                    <button type="submit" class="submit-button">Publicar</button>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Firebase y app scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <div class="particles" id="particles-js"></div>
     
     <script>
         // Configuración de Firebase
@@ -456,14 +510,39 @@
         const database = firebase.database();
         const storage = firebase.storage();
 
-        // Manejo de la UI
-        document.addEventListener('DOMContentLoaded', () => {
-            // Tabs de login/registro
-            const loginTab = document.getElementById('login-tab');
-            const registerTab = document.getElementById('register-tab');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            
+        // Elementos del DOM
+        const authPage = document.getElementById('auth-page');
+        const homePage = document.getElementById('home-page');
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const authMessage = document.getElementById('auth-message');
+        const bookContainer = document.getElementById('book-container');
+        const newPostBtn = document.getElementById('new-post-btn');
+        const postModal = document.getElementById('post-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const postForm = document.getElementById('post-form');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Verificar estado de autenticación
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Usuario autenticado
+                authPage.style.display = 'none';
+                homePage.style.display = 'flex';
+                initHomePage();
+            } else {
+                // Usuario no autenticado
+                authPage.style.display = 'block';
+                homePage.style.display = 'none';
+                initAuthPage();
+            }
+        });
+
+        // Inicializar página de autenticación
+        function initAuthPage() {
+            // Manejar cambio entre pestañas
             loginTab.addEventListener('click', () => {
                 loginTab.classList.add('active');
                 registerTab.classList.remove('active');
@@ -478,7 +557,27 @@
                 loginForm.classList.remove('active');
             });
             
-            // Login
+            // Inicializar partículas
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#9d50bb" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#6e48aa", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+            
+            // Manejar login
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = document.getElementById('login-email').value;
@@ -486,208 +585,203 @@
                 
                 auth.signInWithEmailAndPassword(email, password)
                     .then(() => {
-                        showDashboard();
+                        showMessage('Inicio de sesión exitoso', 'success');
                     })
-                    .catch(error => {
-                        alert('Error al iniciar sesión: ' + error.message);
+                    .catch((error) => {
+                        showMessage(error.message, 'error');
                     });
             });
             
-            // Registro
+            // Manejar registro
             registerForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const name = document.getElementById('register-name').value;
                 const email = document.getElementById('register-email').value;
                 const password = document.getElementById('register-password').value;
-                const confirmPassword = document.getElementById('register-confirm').value;
+                const confirm = document.getElementById('register-confirm').value;
                 
-                if (password !== confirmPassword) {
-                    alert('Las contraseñas no coinciden');
+                if (password !== confirm) {
+                    showMessage('Las contraseñas no coinciden', 'error');
                     return;
                 }
                 
                 auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        // Guardar información adicional del usuario
-                        const user = userCredential.user;
-                        return database.ref('users/' + user.uid).set({
-                            name: name,
-                            email: email,
-                            createdAt: new Date().toISOString()
-                        });
-                    })
                     .then(() => {
-                        alert('Registro exitoso! Ahora puedes iniciar sesión');
-                        loginTab.click();
-                        registerForm.reset();
+                        showMessage('Registro exitoso. Bienvenido!', 'success');
                     })
-                    .catch(error => {
-                        alert('Error al registrar: ' + error.message);
+                    .catch((error) => {
+                        showMessage(error.message, 'error');
                     });
             });
+        }
+
+        // Inicializar página principal
+        function initHomePage() {
+            // Referencia a las publicaciones
+            const postsRef = database.ref('posts');
             
-            // Logout
-            if (document.getElementById('logout-btn')) {
-                document.getElementById('logout-btn').addEventListener('click', () => {
-                    auth.signOut().then(() => {
-                        showAuth();
-                    }).catch(error => {
-                        alert('Error al cerrar sesión: ' + error.message);
-                    });
-                });
-            }
+            // Mostrar/ocultar modal
+            newPostBtn.addEventListener('click', () => {
+                postModal.style.display = 'flex';
+            });
             
-            // Nueva publicación
-            if (document.getElementById('new-post-btn')) {
-                document.getElementById('new-post-btn').addEventListener('click', () => {
-                    document.getElementById('post-modal').style.display = 'flex';
-                });
-            }
+            closeModal.addEventListener('click', () => {
+                postModal.style.display = 'none';
+            });
             
-            // Cerrar modal
-            if (document.querySelector('.close-modal')) {
-                document.querySelector('.close-modal').addEventListener('click', () => {
-                    document.getElementById('post-modal').style.display = 'none';
-                });
-            }
-            
-            // Guardar publicación
-            if (document.getElementById('new-post-form')) {
-                document.getElementById('new-post-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    const user = auth.currentUser;
-                    if (!user) return;
-                    
-                    const title = document.getElementById('post-title').value;
-                    const content = document.getElementById('post-content').value;
-                    const imageFile = document.getElementById('post-image').files[0];
-                    
-                    const newPublication = {
-                        title: title,
-                        content: content,
-                        date: new Date().toISOString(),
-                        userId: user.uid
-                    };
-                    
-                    if (imageFile) {
-                        const fileRef = storage.ref().child(publications/${user.uid}/${Date.now()}_${imageFile.name});
-                        
-                        fileRef.put(imageFile).then(snapshot => {
-                            return snapshot.ref.getDownloadURL();
-                        }).then(downloadURL => {
-                            newPublication.imageUrl = downloadURL;
-                            savePublication(user.uid, newPublication);
-                        }).catch(error => {
-                            alert('Error al subir la imagen: ' + error.message);
-                            savePublication(user.uid, newPublication);
-                        });
-                    } else {
-                        savePublication(user.uid, newPublication);
-                    }
-                });
-            }
-            
-            // Verificar estado de autenticación
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    showDashboard();
-                    loadUserPublications(user.uid);
-                    document.getElementById('username-display').textContent = user.email;
-                } else {
-                    showAuth();
+            // Cerrar modal al hacer clic fuera
+            postModal.addEventListener('click', (e) => {
+                if (e.target === postModal) {
+                    postModal.style.display = 'none';
                 }
             });
-        });
-        
-        // Mostrar dashboard
-        function showDashboard() {
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-        }
-        
-        // Mostrar auth
-        function showAuth() {
-            document.getElementById('auth-container').style.display = 'flex';
-            document.getElementById('dashboard').style.display = 'none';
-        }
-        
-        // Cargar publicaciones del usuario
-        function loadUserPublications(userId) {
-            database.ref('publications/' + userId).on('value', snapshot => {
-                const publicationsList = document.getElementById('publications-list');
-                publicationsList.innerHTML = '';
+            
+            // Manejar logout
+            logoutBtn.addEventListener('click', () => {
+                auth.signOut();
+            });
+            
+            // Manejar envío de nueva publicación
+            postForm.addEventListener('submit', (e) => {
+                e.preventDefault();
                 
-                const data = snapshot.val();
-                if (data) {
-                    Object.entries(data).forEach(([key, publication]) => {
-                        const li = document.createElement('li');
-                        li.className = 'publication-item';
-                        li.textContent = publication.title;
-                        li.dataset.id = key;
-                        li.addEventListener('click', () => displayPublication(userId, key, publication));
-                        
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.className = 'delete-btn';
-                        deleteBtn.textContent = '×';
-                        deleteBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            deletePublication(userId, key);
-                        });
-                        
-                        li.appendChild(deleteBtn);
-                        publicationsList.appendChild(li);
+                const title = document.getElementById('post-title').value;
+                const content = document.getElementById('post-content').value;
+                const imageFile = document.getElementById('post-image').files[0];
+                
+                const user = auth.currentUser;
+                if (!user) return;
+                
+                const newPostRef = postsRef.push();
+                const postId = newPostRef.key;
+                
+                const postData = {
+                    title: title || null,
+                    content: content,
+                    author: {
+                        uid: user.uid,
+                        email: user.email
+                    },
+                    createdAt: firebase.database.ServerValue.TIMESTAMP,
+                    imageUrl: null
+                };
+                
+                // Subir imagen si existe
+                if (imageFile) {
+                    const storageRef = storage.ref(posts/${postId}/${imageFile.name});
+                    const uploadTask = storageRef.put(imageFile);
+                    
+                    uploadTask.on('state_changed', 
+                        null, 
+                        (error) => {
+                            console.error('Error al subir imagen:', error);
+                            // Guardar post sin imagen
+                            newPostRef.set(postData);
+                        }, 
+                        () => {
+                            // Obtener URL de la imagen y guardar post
+                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                postData.imageUrl = downloadURL;
+                                newPostRef.set(postData);
+                            });
+                        }
+                    );
+                } else {
+                    newPostRef.set(postData);
+                }
+                
+                // Limpiar formulario y cerrar modal
+                postForm.reset();
+                postModal.style.display = 'none';
+            });
+            
+            // Cargar y mostrar publicaciones
+            postsRef.orderByChild('createdAt').on('value', (snapshot) => {
+                bookContainer.innerHTML = '';
+                
+                const posts = [];
+                snapshot.forEach((childSnapshot) => {
+                    posts.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
                     });
+                });
+                
+                // Ordenar por fecha (más reciente primero)
+                posts.sort((a, b) => b.createdAt - a.createdAt);
+                
+                // Mostrar publicaciones
+                posts.forEach((post, index) => {
+                    const postElement = createPostElement(post, index + 1);
+                    bookContainer.appendChild(postElement);
+                });
+            });
+            
+            // Inicializar partículas
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: "#9d50bb" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#6e48aa", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
                 }
             });
         }
-        
-        // Mostrar publicación
-        function displayPublication(userId, publicationId, publication) {
-            const publicationView = document.getElementById('publication-view');
+
+        // Crear elemento de publicación
+        function createPostElement(post, pageNumber) {
+            const postElement = document.createElement('div');
+            postElement.className = 'post-page';
             
-            publicationView.innerHTML = `
-                <div class="publication-header">
-                    <h2>${publication.title}</h2>
-                    <span class="publication-date">${new Date(publication.date).toLocaleDateString()}</span>
-                </div>
-                <div class="publication-content">
-                    ${publication.content}
-                </div>
-                ${publication.imageUrl ? <img src="${publication.imageUrl}" alt="${publication.title}" class="publication-image"> : ''}
-            `;
-        }
-        
-        // Guardar publicación
-        function savePublication(userId, publication) {
-            const newPublicationRef = database.ref('publications/' + userId).push();
-            newPublicationRef.set(publication)
-                .then(() => {
-                    alert('Publicación guardada con éxito!');
-                    document.getElementById('post-modal').style.display = 'none';
-                    document.getElementById('new-post-form').reset();
-                })
-                .catch(error => {
-                    alert('Error al guardar: ' + error.message);
-                });
-        }
-        
-        // Eliminar publicación
-        function deletePublication(userId, publicationId) {
-            if (confirm('¿Estás seguro de eliminar esta publicación?')) {
-                database.ref('publications/' + userId + '/' + publicationId).remove()
-                    .then(() => {
-                        document.getElementById('publication-view').innerHTML = `
-                            <div class="empty-state">
-                                <h2>Publicación eliminada</h2>
-                                <p>Selecciona otra publicación o crea una nueva</p>
-                            </div>
-                        `;
-                    })
-                    .catch(error => {
-                        alert('Error al eliminar: ' + error.message);
-                    });
+            const pageNumElement = document.createElement('div');
+            pageNumElement.className = 'page-number';
+            pageNumElement.textContent = pageNumber;
+            
+            let titleElement = '';
+            if (post.title) {
+                titleElement = <h3 class="post-title">${post.title}</h3>;
             }
+            
+            let imageElement = '';
+            if (post.imageUrl) {
+                imageElement = <img src="${post.imageUrl}" alt="Imagen de publicación" class="post-image">;
+            }
+            
+            const date = new Date(post.createdAt);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            
+            postElement.innerHTML = `
+                ${titleElement}
+                <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                ${imageElement}
+                <div class="post-meta">
+                    <span>Publicado por: ${post.author.email}</span>
+                    <span>${formattedDate}</span>
+                </div>
+            `;
+            
+            postElement.prepend(pageNumElement);
+            return postElement;
+        }
+
+        // Mostrar mensajes
+        function showMessage(message, type) {
+            authMessage.textContent = message;
+            authMessage.className = 'auth-message ' + type;
+            
+            setTimeout(() => {
+                authMessage.className = 'auth-message';
+                authMessage.textContent = '';
+            }, 5000);
         }
     </script>
 </body>
