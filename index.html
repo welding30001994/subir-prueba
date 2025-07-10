@@ -3,393 +3,690 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oxxo Max Trading - Plataforma Educativa Futurista</title>
+    <title>Oxxo Max Trading</title>
     <style>
+        /* Estilos generales */
         :root {
-            --primary: #6e48aa;
-            --secondary: #9d50bb;
-            --accent: #4776E6;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --neon: #00f2fe;
+            --primary-color: #00f0ff;
+            --secondary-color: #ff00f0;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --light-text: #ffffff;
+            --dark-text: #cccccc;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: var(--dark);
-            color: var(--light);
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(110, 72, 170, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(157, 80, 187, 0.15) 0%, transparent 50%);
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 30px;
-        }
-        
-        .logo {
-            font-size: 2rem;
+
+        h1, h2, h3 {
             font-weight: 700;
-            background: linear-gradient(to right, var(--neon), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
-        .content-editor {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .editor-toolbar {
+
+        /* Login Container */
+        .container {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .editor-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .editor-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        #contentInput {
-            width: 100%;
-            min-height: 200px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            color: white;
-            font-size: 1rem;
-            margin-bottom: 15px;
-            resize: vertical;
-        }
-        
-        #fileInput {
-            display: none;
-        }
-        
-        .content-display {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .content-item {
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .content-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .content-text {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        .content-image {
-            max-width: 100%;
-            border-radius: 10px;
-            margin: 15px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .content-video {
-            width: 100%;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-        
-        .timestamp {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .content-editor, .content-display {
-                padding: 15px;
-            }
-        }
-        
-        /* Efectos futuristas */
-        .glow-effect {
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             position: relative;
+            overflow: hidden;
         }
-        
-        .glow-effect::after {
+
+        .card {
+            background: rgba(10, 10, 30, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 450px;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2),
+                        0 0 40px rgba(255, 0, 240, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--primary-color)),
+                linear-gradient(
+                to top left,
+                transparent,
+                transparent,
+                transparent,
+                var(--secondary-color));
+            animation: rotate 10s linear infinite;
             z-index: -1;
-            background: linear-gradient(45deg, var(--neon), var(--accent), var(--secondary), var(--primary));
-            background-size: 400%;
-            border-radius: 10px;
-            opacity: 0;
-            transition: 0.5s;
-            animation: glow 8s linear infinite;
-        }
-        
-        .glow-effect:hover::after {
             opacity: 0.3;
         }
-        
-        @keyframes glow {
-            0% {
-                background-position: 0 0;
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.8rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--light-text);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Forms */
+        .form-container {
+            position: relative;
+            min-height: 300px;
+        }
+
+        .auth-form {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .auth-form.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input, 
+        .input-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 5px;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            color: var(--dark-text);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:valid + label,
+        .input-group textarea:focus + label,
+        .input-group textarea:valid + label {
+            top: -20px;
+            left: 0;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 5px;
+            color: var(--dark-bg);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Dashboard (oculto inicialmente) */
+        #dashboard {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .content-container {
+                flex-direction: row;
             }
-            50% {
-                background-position: 400% 0;
-            }
-            100% {
-                background-position: 0 0;
+        }
+
+        .sidebar {
+            flex: 0 0 250px;
+            padding: 1rem;
+            border-right: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .content-viewer {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .publication-item {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .publication-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff5555;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--darker-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        /* Publicación */
+        .publication-view {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            min-height: 300px;
+        }
+
+        .publication-image {
+            max-width: 100%;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                flex: 0 0 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 240, 255, 0.3);
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="logo glow-effect">Oxxo Max Trading</h1>
-            <p>Plataforma educativa futurista</p>
+    <!-- Login/Register Container -->
+    <div class="container" id="auth-container">
+        <div class="card">
+            <div class="logo">
+                <h1>OXXO MAX TRADING</h1>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" id="login-tab">Iniciar Sesión</button>
+                <button class="tab" id="register-tab">Registrarse</button>
+            </div>
+            
+            <div class="form-container">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="input-group">
+                        <input type="email" id="login-email" required>
+                        <label for="login-email">Correo Electrónico</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">Contraseña</label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Acceder</button>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="input-group">
+                        <input type="text" id="register-name" required>
+                        <label for="register-name">Nombre Completo</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" id="register-email" required>
+                        <label for="register-email">Correo Electrónico</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="register-password" required>
+                        <label for="register-password">Contraseña</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="register-confirm" required>
+                        <label for="register-confirm">Confirmar Contraseña</label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dashboard Container -->
+    <div id="dashboard">
+        <header class="dashboard-header">
+            <div class="logo">
+                <h1>OXXO MAX TRADING</h1>
+            </div>
+            
+            <div>
+                <span id="username-display"></span>
+                <button id="logout-btn" class="btn">Salir</button>
+            </div>
         </header>
         
-        <section class="content-editor glow-effect">
-            <h2>Agregar Nuevo Contenido</h2>
-            <div class="editor-toolbar">
-                <button class="editor-btn" onclick="formatText('bold')"><b>B</b></button>
-                <button class="editor-btn" onclick="formatText('italic')"><i>I</i></button>
-                <button class="editor-btn" onclick="formatText('underline')"><u>U</u></button>
-                <button class="editor-btn" onclick="insertText('\n# ')">Título</button>
-                <button class="editor-btn" onclick="insertText('\n- ')">Lista</button>
-                <button class="editor-btn" onclick="document.getElementById('fileInput').click()">Imagen/Video</button>
-                <input type="file" id="fileInput" accept="image/, video/" onchange="handleFileUpload()">
-            </div>
-            <textarea id="contentInput" placeholder="Escribe tu contenido aquí o pega información de Wikipedia..."></textarea>
-            <button class="editor-btn" onclick="saveContent()">Publicar Contenido</button>
-        </section>
+        <div class="content-container">
+            <aside class="sidebar">
+                <h3>Mis Publicaciones</h3>
+                <ul id="publications-list">
+                    <!-- Publicaciones se cargarán aquí -->
+                </ul>
+                <button id="new-post-btn" class="btn">+ Nueva Publicación</button>
+            </aside>
+            
+            <section class="content-viewer">
+                <div class="publication-view" id="publication-view">
+                    <div class="empty-state">
+                        <h2>Selecciona una publicación o crea una nueva</h2>
+                        <p>Tu contenido educativo se mostrará aquí</p>
+                    </div>
+                </div>
+            </section>
+        </div>
         
-        <section class="content-display" id="contentDisplay">
-            <h2>Contenido Reciente</h2>
-            <!-- El contenido se cargará aquí dinámicamente -->
-        </section>
+        <!-- Modal para nueva publicación -->
+        <div class="modal" id="post-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Nueva Publicación Educativa</h2>
+                
+                <form id="new-post-form">
+                    <div class="input-group">
+                        <input type="text" id="post-title" required>
+                        <label for="post-title">Título de la Lección</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <textarea id="post-content" rows="5" required></textarea>
+                        <label for="post-content">Contenido</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="file" id="post-image" accept="image/*">
+                        <label for="post-image">Imagen (opcional)</label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Guardar Lección</button>
+                </form>
+            </div>
+        </div>
     </div>
 
+    <!-- Firebase y app scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
     <script>
-        // Cargar contenido guardado al iniciar
-        document.addEventListener('DOMContentLoaded', function() {
-            loadContent();
-        });
-        
-        // Función para guardar contenido
-        function saveContent() {
-            const content = document.getElementById('contentInput').value;
-            const fileInput = document.getElementById('fileInput');
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.firebasestorage.app",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+
+        // Inicializar Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Manejo de la UI
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tabs de login/registro
+            const loginTab = document.getElementById('login-tab');
+            const registerTab = document.getElementById('register-tab');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
             
-            if (!content && !fileInput.files[0]) {
-                alert('Por favor, ingresa contenido o sube un archivo');
-                return;
+            loginTab.addEventListener('click', () => {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            });
+            
+            registerTab.addEventListener('click', () => {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            });
+            
+            // Login
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(() => {
+                        showDashboard();
+                    })
+                    .catch(error => {
+                        alert('Error al iniciar sesión: ' + error.message);
+                    });
+            });
+            
+            // Registro
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden');
+                    return;
+                }
+                
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Guardar información adicional del usuario
+                        const user = userCredential.user;
+                        return database.ref('users/' + user.uid).set({
+                            name: name,
+                            email: email,
+                            createdAt: new Date().toISOString()
+                        });
+                    })
+                    .then(() => {
+                        alert('Registro exitoso! Ahora puedes iniciar sesión');
+                        loginTab.click();
+                        registerForm.reset();
+                    })
+                    .catch(error => {
+                        alert('Error al registrar: ' + error.message);
+                    });
+            });
+            
+            // Logout
+            if (document.getElementById('logout-btn')) {
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    auth.signOut().then(() => {
+                        showAuth();
+                    }).catch(error => {
+                        alert('Error al cerrar sesión: ' + error.message);
+                    });
+                });
             }
             
-            // Crear objeto con el contenido
-            const contentObj = {
-                text: content,
-                timestamp: new Date().toLocaleString(),
-                media: null
-            };
+            // Nueva publicación
+            if (document.getElementById('new-post-btn')) {
+                document.getElementById('new-post-btn').addEventListener('click', () => {
+                    document.getElementById('post-modal').style.display = 'flex';
+                });
+            }
             
-            // Manejar archivos subidos
-            if (fileInput.files[0]) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    contentObj.media = {
-                        type: file.type.split('/')[0], // 'image' o 'video'
-                        data: e.target.result
+            // Cerrar modal
+            if (document.querySelector('.close-modal')) {
+                document.querySelector('.close-modal').addEventListener('click', () => {
+                    document.getElementById('post-modal').style.display = 'none';
+                });
+            }
+            
+            // Guardar publicación
+            if (document.getElementById('new-post-form')) {
+                document.getElementById('new-post-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const user = auth.currentUser;
+                    if (!user) return;
+                    
+                    const title = document.getElementById('post-title').value;
+                    const content = document.getElementById('post-content').value;
+                    const imageFile = document.getElementById('post-image').files[0];
+                    
+                    const newPublication = {
+                        title: title,
+                        content: content,
+                        date: new Date().toISOString(),
+                        userId: user.uid
                     };
                     
-                    // Guardar en localStorage
-                    saveToLocalStorage(contentObj);
-                    
-                    // Limpiar campos
-                    document.getElementById('contentInput').value = '';
-                    fileInput.value = '';
-                    
-                    // Recargar contenido mostrado
-                    loadContent();
-                };
-                
-                reader.readAsDataURL(file);
-            } else {
-                // Guardar solo texto
-                saveToLocalStorage(contentObj);
-                
-                // Limpiar campo
-                document.getElementById('contentInput').value = '';
-                
-                // Recargar contenido mostrado
-                loadContent();
-            }
-        }
-        
-        // Guardar en localStorage
-        function saveToLocalStorage(contentObj) {
-            let contents = JSON.parse(localStorage.getItem('oxxoMaxContents')) || [];
-            contents.unshift(contentObj); // Agregar al inicio
-            localStorage.setItem('oxxoMaxContents', JSON.stringify(contents));
-        }
-        
-        // Cargar contenido desde localStorage
-        function loadContent() {
-            const contents = JSON.parse(localStorage.getItem('oxxoMaxContents')) || [];
-            const display = document.getElementById('contentDisplay');
-            
-            // Limpiar display excepto el título
-            while (display.children.length > 1) {
-                display.removeChild(display.lastChild);
-            }
-            
-            // Mostrar cada contenido
-            contents.forEach(content => {
-                const item = document.createElement('div');
-                item.className = 'content-item';
-                
-                if (content.text) {
-                    const text = document.createElement('div');
-                    text.className = 'content-text';
-                    // Convertir saltos de línea a <br> y markdown básico a HTML
-                    let htmlText = content.text
-                        .replace(/\n/g, '<br>')
-                        .replace(/\\(.?)\\*/g, '<strong>$1</strong>')
-                        .replace(/\(.?)\*/g, '<em>$1</em>')
-                        .replace(/\(.*?)\/g, '<u>$1</u>')
-                        .replace(/\# (.*?)(<br>|$)/g, '<h3>$1</h3>')
-                        .replace(/\- (.*?)(<br>|$)/g, '<li>$1</li>');
-                    
-                    text.innerHTML = htmlText;
-                    item.appendChild(text);
-                }
-                
-                if (content.media) {
-                    if (content.media.type === 'image') {
-                        const img = document.createElement('img');
-                        img.src = content.media.data;
-                        img.className = 'content-image';
-                        item.appendChild(img);
-                    } else if (content.media.type === 'video') {
-                        const video = document.createElement('video');
-                        video.src = content.media.data;
-                        video.controls = true;
-                        video.className = 'content-video';
-                        item.appendChild(video);
+                    if (imageFile) {
+                        const fileRef = storage.ref().child(publications/${user.uid}/${Date.now()}_${imageFile.name});
+                        
+                        fileRef.put(imageFile).then(snapshot => {
+                            return snapshot.ref.getDownloadURL();
+                        }).then(downloadURL => {
+                            newPublication.imageUrl = downloadURL;
+                            savePublication(user.uid, newPublication);
+                        }).catch(error => {
+                            alert('Error al subir la imagen: ' + error.message);
+                            savePublication(user.uid, newPublication);
+                        });
+                    } else {
+                        savePublication(user.uid, newPublication);
                     }
+                });
+            }
+            
+            // Verificar estado de autenticación
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    showDashboard();
+                    loadUserPublications(user.uid);
+                    document.getElementById('username-display').textContent = user.email;
+                } else {
+                    showAuth();
                 }
+            });
+        });
+        
+        // Mostrar dashboard
+        function showDashboard() {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+        
+        // Mostrar auth
+        function showAuth() {
+            document.getElementById('auth-container').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+        
+        // Cargar publicaciones del usuario
+        function loadUserPublications(userId) {
+            database.ref('publications/' + userId).on('value', snapshot => {
+                const publicationsList = document.getElementById('publications-list');
+                publicationsList.innerHTML = '';
                 
-                const time = document.createElement('div');
-                time.className = 'timestamp';
-                time.textContent = 'Publicado: ' + content.timestamp;
-                item.appendChild(time);
-                
-                display.appendChild(item);
+                const data = snapshot.val();
+                if (data) {
+                    Object.entries(data).forEach(([key, publication]) => {
+                        const li = document.createElement('li');
+                        li.className = 'publication-item';
+                        li.textContent = publication.title;
+                        li.dataset.id = key;
+                        li.addEventListener('click', () => displayPublication(userId, key, publication));
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.textContent = '×';
+                        deleteBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            deletePublication(userId, key);
+                        });
+                        
+                        li.appendChild(deleteBtn);
+                        publicationsList.appendChild(li);
+                    });
+                }
             });
         }
         
-        // Funciones de formato de texto
-        function formatText(format) {
-            const textarea = document.getElementById('contentInput');
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            let newText = '';
+        // Mostrar publicación
+        function displayPublication(userId, publicationId, publication) {
+            const publicationView = document.getElementById('publication-view');
             
-            switch(format) {
-                case 'bold':
-                    newText = '' + selectedText + '';
-                    break;
-                case 'italic':
-                    newText = '' + selectedText + '';
-                    break;
-                case 'underline':
-                    newText = '' + selectedText + '';
-                    break;
-            }
-            
-            textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+            publicationView.innerHTML = `
+                <div class="publication-header">
+                    <h2>${publication.title}</h2>
+                    <span class="publication-date">${new Date(publication.date).toLocaleDateString()}</span>
+                </div>
+                <div class="publication-content">
+                    ${publication.content}
+                </div>
+                ${publication.imageUrl ? <img src="${publication.imageUrl}" alt="${publication.title}" class="publication-image"> : ''}
+            `;
         }
         
-        function insertText(text) {
-            const textarea = document.getElementById('contentInput');
-            const start = textarea.selectionStart;
-            
-            textarea.value = textarea.value.substring(0, start) + text + textarea.value.substring(start);
-            textarea.focus();
-            textarea.selectionStart = start + text.length;
-            textarea.selectionEnd = start + text.length;
+        // Guardar publicación
+        function savePublication(userId, publication) {
+            const newPublicationRef = database.ref('publications/' + userId).push();
+            newPublicationRef.set(publication)
+                .then(() => {
+                    alert('Publicación guardada con éxito!');
+                    document.getElementById('post-modal').style.display = 'none';
+                    document.getElementById('new-post-form').reset();
+                })
+                .catch(error => {
+                    alert('Error al guardar: ' + error.message);
+                });
         }
         
-        function handleFileUpload() {
-            const fileInput = document.getElementById('fileInput');
-            if (fileInput.files[0]) {
-                // Opcional: mostrar vista previa o nombre de archivo
+        // Eliminar publicación
+        function deletePublication(userId, publicationId) {
+            if (confirm('¿Estás seguro de eliminar esta publicación?')) {
+                database.ref('publications/' + userId + '/' + publicationId).remove()
+                    .then(() => {
+                        document.getElementById('publication-view').innerHTML = `
+                            <div class="empty-state">
+                                <h2>Publicación eliminada</h2>
+                                <p>Selecciona otra publicación o crea una nueva</p>
+                            </div>
+                        `;
+                    })
+                    .catch(error => {
+                        alert('Error al eliminar: ' + error.message);
+                    });
             }
         }
     </script>
